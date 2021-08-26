@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pet_world_1/hayvan_bilgisi/hayvan_ekleme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Hayvanlistesi extends StatefulWidget {
   @override
@@ -81,7 +82,10 @@ class _HayvanlistesiState extends State<Hayvanlistesi> {
                                   fontSize: 12),
                             ),
                           ],
-                        )
+                        ),
+                        IconButton(onPressed: (){
+                          launch("https://www.google.com/maps/@${animals[index]['latitude']},${animals[index]['longitude']},14z");
+                        }, icon: Icon(Icons.pin_drop))
                       ],
                     ),
                     Text(

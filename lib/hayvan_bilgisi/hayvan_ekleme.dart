@@ -26,8 +26,8 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
   TextEditingController adressCt = TextEditingController();
   TextEditingController genderCt = TextEditingController();
   TextEditingController konumCt = TextEditingController();
-  double long = 0.0;
-  double lat = 0.0;
+  double longitude = 0.0;
+  double latitude = 0.0;
 
   bool imageUploading = false;
   FirebaseStorage storage = FirebaseStorage.instance;
@@ -41,18 +41,16 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  void createRecord(String? imageName, String? name, String? adress,
-      String? gender, String? konum) {
+  void createRecord(String? imageName) {
     print("İamge name => $imageName");
     _firestore //ikinci yöntem
-        .collection("animals")
-        .doc("kedi")
-        .set({
-      'name': '$name',
-      'adress': '$adress',
-      'gender': '$gender',
+        .collection("animals").add({
+      'name': '${nameCt.text}',
+      'adress': '${adressCt.text}',
+      'gender': '${genderCt.text}',
       'image_name': '$imageName',
-      'konum': '$konum',
+      'latitude':latitude,
+      'longitude':longitude
     }).whenComplete(() => print("veri eklendi"));
   }
 
@@ -81,7 +79,7 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
         print("$url");
       });
       createRecord(
-          url, nameCt.text, adressCt.text, genderCt.text, konumCt.text);
+          url);
     });
   }
 
@@ -217,31 +215,32 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
                   SizedBox(height: 20),
                   
                   Container(height: 100,
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width-50,
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Column(
                           children: [
                             Expanded(
-                              child: Text(lat.toString()),
+                              child: Text(latitude.toString()),
                             ),
                             Expanded(
-                              child: Text(long.toString()),
+                              child: Text(longitude.toString()),
                             )
                           ],
                         ),
                       ),
 
-                      IconButton(onPressed: () {
-                            setState(() async {
-                              await getLocation();
-                              long = geolocatorController
-                                  .currentLocation!.longitude;
-                              lat = geolocatorController
-                                  .currentLocation!.latitude;
-                            });
-                          }, icon: Icon(Icons.location_pin),)
+                      Center(
+                        child: IconButton(onPressed: () async {
+                                await getLocation();
+                                var position = await geolocatorController.getLocation();
+                                longitude = position!.longitude;
+                                latitude = position.latitude;
+                                (context as Element).markNeedsBuild();
+                            }, icon: Icon(Icons.location_pin),),
+                      )
                     ],
                   ),
                 )
@@ -284,25 +283,25 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
   }
 
   Future getLocation() async {
-    await Geolocator.requestPermission().then((request) {
-      print("REQUEST : $request");
-      if (Platform.isIOS) {
-        if (request != LocationPermission.whileInUse) {
-          print("NOT LOCATION PERMISSION");
-          return;
-        } else {
-          print("PERMISSION OK");
-          geolocatorController.permissionOK();
-        }
+    var request = await Geolocator.requestPermission();
+
+    print("REQUEST : $request");
+    if (Platform.isIOS) {
+      if (request != LocationPermission.whileInUse) {
+        print("NOT LOCATION PERMISSION");
+        return;
       } else {
-        if (request != LocationPermission.always) {
-          print("NOT LOCATION PERMISSION");
-          return;
-        } else {
-          print("PERMISSION OK");
-          geolocatorController.permissionOK();
-        }
+        print("PERMISSION OK");
+        geolocatorController.permissionOK();
       }
-    });
+    } else {
+      if (request != LocationPermission.always) {
+        print("NOT LOCATION PERMISSION");
+        return;
+      } else {
+        print("PERMISSION OK");
+        geolocatorController.permissionOK();
+      }
+    }
   }
 }
