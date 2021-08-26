@@ -1,63 +1,81 @@
-/*import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Iletisim extends StatefulWidget {
-  @override
-  _IletisimState createState() => _IletisimState();
-}
-
-class _IletisimState extends State<Iletisim> {
-  Completer<GoogleMapController> _haritaHazirlayici = 
-  Completer<GoogleMapController>();
-
-  Map<MarkerId, Marker> _isaretler= <MarkerId, Marker>{};
+class Iletisim extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
         title: Text("İletişim"),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            height: 300.0,
-            width: double.maxFinite,
-            child: GoogleMap(
-              mapType:MapType.normal ,
-              markers: Set<Marker>.of(_isaretler.values),
-              initialCameraPosition: CameraPosition(
-                target: LatLng(22, 22),
-                zoom: 17.0,
-
-              ),
-              onMapCreated: (GoogleMapController controller){
-                _haritaHazirlayici.complete(controller);
-                final MarkerId isaretId = MarkerId("merkez");
-                final Marker isaret = Marker(
-                  markerId: isaretId,
-                  position: LatLng(22 , 22),
-                  infoWindow: InfoWindow(
-                    title: "Hayvan",
-                    snippet: "Hayvanımız bu civardadır",
-                    onTap: () {
-                      debugPrint("işaretleyici tıklandı");
-                    },
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 300,
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/kopek6.jpg"),
+                  fit: BoxFit.fill,
                   ),
-                  
-                );
-                setState(() {
-                  _isaretler[isaretId] = isaret;
-                });
-              },
+                
               ),
-             ),
-        
-        ],
+            ),
+            Container(
+              height:100,
+              child: Center(
+                child: Icon(FontAwesomeIcons.home, size: 50),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+              child: Text(
+                "Antalya Kepez", 
+                style: TextStyle(
+                  fontWeight: FontWeight.bold
+                  ),
+                  textAlign: TextAlign.center,
+                  ),
+            ),
+            Container(
+              height:100,
+              child: Center(
+                child: Icon(FontAwesomeIcons.phone, size: 50),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+              child: Text(
+                "0 555 555 55 55", 
+                style: TextStyle(
+                  fontWeight: FontWeight.bold
+                  ),
+                  textAlign: TextAlign.center,
+                  ),
+            ),
+            Container(
+              height:100,
+              child: Center(
+                child: Icon(FontAwesomeIcons.envelope, size: 50),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+              child: Text(
+                "salimlbj07@gmail.com", 
+                style: TextStyle(
+                  fontWeight: FontWeight.bold
+                  ),
+                  textAlign: TextAlign.center,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-*/
+

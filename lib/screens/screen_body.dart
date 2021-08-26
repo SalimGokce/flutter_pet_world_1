@@ -14,7 +14,7 @@ class ScreenBody extends StatelessWidget {
           Bilgiler(
             title: "Boncuk",
             cins: "Köpek",
-            price: 3),
+            yas: 3),
             SizedBox(height: 20),
             Row(
               children: <Widget>[

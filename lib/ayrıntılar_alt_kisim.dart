@@ -5,11 +5,11 @@ class Bilgiler extends StatelessWidget {
     Key? key,
     required this.title,
     required this.cins,
-    required this.price,
+    required this.yas,
   }) : super(key: key);
 
   final String title, cins;
-  final int price;
+  final int yas;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class Bilgiler extends StatelessWidget {
           ),
           Spacer(),
           Text(
-            "\$price",
+            "$yas",
             style: Theme.of(context)
                 .textTheme
                 .headline5!

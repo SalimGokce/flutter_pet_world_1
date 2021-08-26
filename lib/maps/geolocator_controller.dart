@@ -6,6 +6,8 @@ class GeolocatorController extends GetxController {
   bool isRequiredPermission = false;
   Position? currentLocation;
 
+  String? get text => null;
+
   Future<Position?> getLocation() async {
     print("getLocation start");
     var perm = await Geolocator.checkPermission();

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pet_world_1/service/auth.dart';
 import 'package:flutter_pet_world_1/widgets/CategoryCard.dart';
 import 'package:flutter_pet_world_1/yanmenu.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:share/share.dart';
 
 class AnaSayfa extends StatefulWidget {
@@ -68,17 +67,17 @@ class _AnaSayfaState extends State<AnaSayfa> {
                       children: <Widget>[
                         CategoryCard(
                           title: "KEDİLER",
-                          svgSrc: "assets/icons/sun.svg",
+                          svgSrc: "assets/icons/flower.svg",
                           press: () {}, key: null,
                         ),
                         CategoryCard(
                           title: "KÖPEKLER",
-                          svgSrc: "assets/icons/sun.svg",
+                          svgSrc: "assets/icons/heart-icon.svg",
                           press: () {}, key: null,
                         ),
                         CategoryCard(
                           title: "HEMEN BUL",
-                          svgSrc: "assets/icons/sun.svg",
+                          svgSrc: "assets/icons/search.svg",
                           press: () {
                             
                           }, key: null,

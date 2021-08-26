@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:path/path.dart' as path;
+import 'package:flutter_pet_world_1/maps/geolocator_controller.dart';
+import 'package:flutter_pet_world_1/service/locations_app.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 
 class HayvanEkleme extends StatefulWidget {
   const HayvanEkleme({Key? key}) : super(key: key);
@@ -19,6 +20,14 @@ class HayvanEkleme extends StatefulWidget {
 
 class _HayvanEklemeState extends State<HayvanEkleme> {
   File? _image;
+  final geolocatorController = Get.put(GeolocatorController());
+
+  TextEditingController nameCt = TextEditingController();
+  TextEditingController adressCt = TextEditingController();
+  TextEditingController genderCt = TextEditingController();
+  TextEditingController konumCt = TextEditingController();
+  double long = 0.0;
+  double lat = 0.0;
 
   bool imageUploading = false;
   FirebaseStorage storage = FirebaseStorage.instance;
@@ -32,8 +41,8 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  void createRecord(
-      String? imageName, String? name, String? adress, String? gender, String? konum) {
+  void createRecord(String? imageName, String? name, String? adress,
+      String? gender, String? konum) {
     print("İamge name => $imageName");
     _firestore //ikinci yöntem
         .collection("animals")
@@ -43,8 +52,7 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
       'adress': '$adress',
       'gender': '$gender',
       'image_name': '$imageName',
-      'konum' : '$konum',
-      
+      'konum': '$konum',
     }).whenComplete(() => print("veri eklendi"));
   }
 
@@ -72,9 +80,33 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
         url = value;
         print("$url");
       });
-      createRecord(url, nameCt.text, adressCt.text, genderCt.text, konumCt.text);
+      createRecord(
+          url, nameCt.text, adressCt.text, genderCt.text, konumCt.text);
     });
   }
+
+  LocationApp locationApp = LocationApp();
+
+  //buraya yazacağım kullanırken bu rayı kopyala yapıştır direk
+  /*
+
+  Şimdi bi tane webview plugini bul pub.devden/ sonra onun initialUrl kısmına google maps linkini ver bu linkte lan lot kısmı virgül ile ayrılarak yazar zaten, burdan aldığın konumuo linkteki lan lot kısmına yazarsan uygulama içinde google maps açılır
+
+  WebView(
+                javascriptMode: JavascriptMode.unrestricted,
+                initialUrl:
+                    "https://www.google.com/maps/@${locationApp.lat},${locationApp.lon},14z",
+              ),
+  webview_flutter: ^2.0.12   => bunuda pubspeckyampla ekle,
+              webview kodu bu
+              gibi
+              üstte linkteki lat lon kısmlarını görüyorsun oraya parametre olarak vereceksin
+
+  // Bu widgetlri alarısın, üstteki tanımlamayıda kullanacağın sayfanını void bölümleri yazdığım yere yazarsın alır muhtemelen bende kullanıyorum şimdi çünkü bu kodu, çalışıyor
+  Text("Lan = ${locationApp.lan}"),
+  Text("Lot = ${locationApp.lot}")
+
+  */
 
   Future<List<Map<String, dynamic>>> _loadImages() async {
     List<Map<String, dynamic>> files = [];
@@ -114,8 +146,6 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
         centerTitle: true,
       ),
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
         child: ListView(
           shrinkWrap: true,
           children: [
@@ -185,35 +215,38 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
                   ),
                   textInputs("Cinsiyet giriniz", genderCt),
                   SizedBox(height: 20),
-                  Row(
+                  
+                  Container(height: 100,
+                  width: MediaQuery.of(context).size.width,
+                    child: Row(
                     children: [
                       Expanded(
                         child: Column(
                           children: [
                             Expanded(
-                              child: textInputs("Long", konumCt),
+                              child: Text(lat.toString()),
                             ),
                             Expanded(
-                              child: textInputs("Lat", konumCt),
+                              child: Text(long.toString()),
                             )
                           ],
                         ),
                       ),
-                      ElevatedButton(
-                          onPressed: () async {
+
+                      IconButton(onPressed: () {
                             setState(() async {
-                              var loc = await Geolocator.getCurrentPosition();
-                              konumCt.text = loc.longitude.toString();
-                              konumCt.text = loc.latitude.toString();
+                              await getLocation();
+                              long = geolocatorController
+                                  .currentLocation!.longitude;
+                              lat = geolocatorController
+                                  .currentLocation!.latitude;
                             });
-                          },
-                          child: Icon(Icons.location_pin))
+                          }, icon: Icon(Icons.location_pin),)
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
+                )
+                  
+                  ],
               ),
             ),
             Padding(
@@ -240,11 +273,6 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
     );
   }
 
-  TextEditingController nameCt = TextEditingController();
-  TextEditingController adressCt = TextEditingController();
-  TextEditingController genderCt = TextEditingController();
-  TextEditingController konumCt = TextEditingController();
-
   Widget textInputs(
       String? hint, TextEditingController? textEditingController) {
     return TextField(
@@ -253,5 +281,28 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
           hintText: hint,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
     );
+  }
+
+  Future getLocation() async {
+    await Geolocator.requestPermission().then((request) {
+      print("REQUEST : $request");
+      if (Platform.isIOS) {
+        if (request != LocationPermission.whileInUse) {
+          print("NOT LOCATION PERMISSION");
+          return;
+        } else {
+          print("PERMISSION OK");
+          geolocatorController.permissionOK();
+        }
+      } else {
+        if (request != LocationPermission.always) {
+          print("NOT LOCATION PERMISSION");
+          return;
+        } else {
+          print("PERMISSION OK");
+          geolocatorController.permissionOK();
+        }
+      }
+    });
   }
 }

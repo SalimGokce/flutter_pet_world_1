@@ -26,8 +26,8 @@ class BottomNavBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween ,
         children: <Widget>[
           IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.pets)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.photo_library)),
         ],
         ),
     );
