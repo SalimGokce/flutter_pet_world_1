@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pet_world_1/hayvan_bilgisi/hayvan_listesi.dart';
 import 'package:flutter_pet_world_1/maps/geolocator_controller.dart';
 import 'package:flutter_pet_world_1/service/locations_app.dart';
 import 'package:geolocator/geolocator.dart';
@@ -44,13 +45,14 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
   void createRecord(String? imageName) {
     print("İamge name => $imageName");
     _firestore //ikinci yöntem
-        .collection("animals").add({
+        .collection("animals")
+        .add({
       'name': '${nameCt.text}',
       'adress': '${adressCt.text}',
       'gender': '${genderCt.text}',
       'image_name': '$imageName',
-      'latitude':latitude,
-      'longitude':longitude
+      'latitude': latitude,
+      'longitude': longitude
     }).whenComplete(() => print("veri eklendi"));
   }
 
@@ -78,33 +80,11 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
         url = value;
         print("$url");
       });
-      createRecord(
-          url);
+      createRecord(url);
     });
   }
 
   LocationApp locationApp = LocationApp();
-
-  //buraya yazacağım kullanırken bu rayı kopyala yapıştır direk
-  /*
-
-  Şimdi bi tane webview plugini bul pub.devden/ sonra onun initialUrl kısmına google maps linkini ver bu linkte lan lot kısmı virgül ile ayrılarak yazar zaten, burdan aldığın konumuo linkteki lan lot kısmına yazarsan uygulama içinde google maps açılır
-
-  WebView(
-                javascriptMode: JavascriptMode.unrestricted,
-                initialUrl:
-                    "https://www.google.com/maps/@${locationApp.lat},${locationApp.lon},14z",
-              ),
-  webview_flutter: ^2.0.12   => bunuda pubspeckyampla ekle,
-              webview kodu bu
-              gibi
-              üstte linkteki lat lon kısmlarını görüyorsun oraya parametre olarak vereceksin
-
-  // Bu widgetlri alarısın, üstteki tanımlamayıda kullanacağın sayfanını void bölümleri yazdığım yere yazarsın alır muhtemelen bende kullanıyorum şimdi çünkü bu kodu, çalışıyor
-  Text("Lan = ${locationApp.lan}"),
-  Text("Lot = ${locationApp.lot}")
-
-  */
 
   Future<List<Map<String, dynamic>>> _loadImages() async {
     List<Map<String, dynamic>> files = [];
@@ -213,39 +193,41 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
                   ),
                   textInputs("Cinsiyet giriniz", genderCt),
                   SizedBox(height: 20),
-                  
-                  Container(height: 100,
-                  width: MediaQuery.of(context).size.width-50,
+                  Container(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width - 50,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Text(latitude.toString()),
-                            ),
-                            Expanded(
-                              child: Text(longitude.toString()),
-                            )
-                          ],
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Text(latitude.toString()),
+                              ),
+                              Expanded(
+                                child: Text(longitude.toString()),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-
-                      Center(
-                        child: IconButton(onPressed: () async {
-                                await getLocation();
-                                var position = await geolocatorController.getLocation();
-                                longitude = position!.longitude;
-                                latitude = position.latitude;
-                                (context as Element).markNeedsBuild();
-                            }, icon: Icon(Icons.location_pin),),
-                      )
-                    ],
-                  ),
-                )
-                  
-                  ],
+                        Center(
+                          child: IconButton(
+                            onPressed: () async {
+                              await getLocation();
+                              var position =
+                                  await geolocatorController.getLocation();
+                              longitude = position!.longitude;
+                              latitude = position.latitude;
+                              (context as Element).markNeedsBuild();
+                            },
+                            icon: Icon(Icons.location_pin),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
             Padding(
@@ -262,7 +244,7 @@ class _HayvanEklemeState extends State<HayvanEkleme> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HayvanEkleme()));
+                                builder: (context) => Hayvanlistesi()));
                       },
               ),
             ),

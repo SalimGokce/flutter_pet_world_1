@@ -26,14 +26,14 @@ class YanMenu extends StatelessWidget {
                     height: 1.0,
                     color: Colors.blueGrey,
                   ),
-                  ListTile(
+                /*  ListTile(
                     leading: Icon(Icons.pets),
                     title: Text("PROFİLİM"),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.pushNamed(context, "/geolocatorr");
                     },
-                  ),
+                  ), */
                   Divider(
                     height: 1.0,
                     color: Colors.blueGrey,

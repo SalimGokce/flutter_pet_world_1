@@ -33,7 +33,7 @@ class Iletisim extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
               child: Text(
-                "Antalya Kepez", 
+                "Yavuz Selim caddesi 6375. Sk. No:818 Kepez/Antalya", 
                 style: TextStyle(
                   fontWeight: FontWeight.bold
                   ),
@@ -65,7 +65,7 @@ class Iletisim extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
               child: Text(
-                "salimlbj07@gmail.com", 
+                "salim07@gmail.com", 
                 style: TextStyle(
                   fontWeight: FontWeight.bold
                   ),

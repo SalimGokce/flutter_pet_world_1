@@ -46,80 +46,95 @@ class _HayvanlistesiState extends State<Hayvanlistesi> {
           itemBuilder: (context, index) {
             return AspectRatio(
               aspectRatio: 1.35,
-              child: Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                padding: EdgeInsets.all(12),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        Expanded(
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                animals[index]['image_name'],
-                                fit: BoxFit.contain,
-                              )),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              animals[index]['adress'],
-                              style: TextStyle(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                          blurRadius: 3,
+                          color: Colors.black12,
+                          offset: Offset.zero,
+                          spreadRadius: 5)
+                    ], borderRadius: BorderRadius.circular(35)),
+                    child: Card(
+                      elevation: 5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.network(
+                                  animals[index]['image_name'],
+                                  fit: BoxFit.contain,
+                                )),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                animals[index]['name'],
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
-                                  fontSize: 12),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              animals[index]['gender'],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        IconButton(onPressed: (){
-                          launch("https://www.google.com/maps/@${animals[index]['latitude']},${animals[index]['longitude']},14z");
-                        }, icon: Icon(Icons.pin_drop))
-                      ],
-                    ),
-                    Text(
-                      animals[index]['name'],
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 24),
-                    ),
-                  ],
-                ),
-
-                /*  color: animals['gender'] == true ? Colors.blue : Colors.pink,
-                child: Row(
-                  
-                  children: [
-                    
-                  Text(animals['name']),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      height: MediaQuery.of(context).size.width / 2,
-                      alignment: Alignment.center,
-                      
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(animals['image_name'])
-                              
+                                ),
                               ),
+                              SizedBox(width: 30),
+                              Text(
+                                animals[index]['gender'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 12),
                               ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                animals[index]['adress'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 12),
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    launch(
+                                        "https://www.google.com/maps/@${animals[index]['latitude']},${animals[index]['longitude']},14z");
+                                  },
+                                  icon: Icon(Icons.pin_drop)),
+                            ],
+                          )
+                        ],
+                      ),
                     )
-                  ],
-                ), */
+
+                    /*  color: animals['gender'] == true ? Colors.blue : Colors.pink,
+                  child: Row(
+                    
+                    children: [
+                      
+                    Text(animals['name']),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        height: MediaQuery.of(context).size.width / 2,
+                        alignment: Alignment.center,
+                        
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(animals['image_name'])
+                                
+                                ),
+                                ),
+                      )
+                    ],
+                  ), */
+                    ),
               ),
             );
           },

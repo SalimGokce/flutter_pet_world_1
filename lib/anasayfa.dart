@@ -83,7 +83,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                           }, key: null,
                         ),
                         CategoryCard(
-                          title: "SEVGİ ELİ",
+                          title: "YARDIM ELİ",
                           svgSrc: "assets/icons/sun.svg",
                           press: () {}, key: null,
                         ),
